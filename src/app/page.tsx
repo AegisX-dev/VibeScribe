@@ -214,7 +214,9 @@ export default function Home() {
 
           {/* Right column - Personalization Box */}
           <div className="lg:col-span-1">
-            <PersonalizationBox className="sticky top-8" />
+            <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <PersonalizationBox />
+            </div>
           </div>
         </div>
       </div>
