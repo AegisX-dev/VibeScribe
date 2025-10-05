@@ -153,10 +153,11 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Delete the profile from the database
-    const { error: deleteError } = await supabase
+    const { data, error: deleteError, count } = await supabase
       .from('profiles')
       .delete()
-      .eq('id', userId);
+      .eq('id', userId)
+      .select();
 
     if (deleteError) {
       console.error('Database error:', deleteError);
@@ -165,6 +166,17 @@ export async function DELETE(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Check if any rows were actually deleted
+    if (!data || data.length === 0) {
+      console.warn('No profile found to delete for user ID:', userId);
+      return NextResponse.json(
+        { message: 'No profile found to delete.' },
+        { status: 404 }
+      );
+    }
+
+    console.log('Successfully deleted profile for user ID:', userId);
 
     // Return success response
     return NextResponse.json(

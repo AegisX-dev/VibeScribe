@@ -1,31 +1,54 @@
 # VibeScribe 🚀
 
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **VibeScribe** is an AI-powered content partner that transforms raw, unstructured thoughts into authentic, platform-specific social media posts. The goal is to generate content that feels genuinely human, maintains a consistent brand voice, and saves creators hours of time.
 
-This project is a single-page web application built with Next.js. The core functionality revolves around taking user input, sending it to a backend API route which then calls the OpenAI API, and displaying the formatted results.
+This project is a single-page web application built with Next.js. The core functionality revolves around taking user input, sending it to a backend API route which then calls the OpenRouter API with DeepSeek R1, and displaying the formatted results with a human-likeness score.
+
+## 📸 Screenshots
+
+### Main Interface - Input & Output
+
+![VibeScribe Interface showing generated posts](./public/output-view.png)
+_Transform messy brain dumps into polished, platform-specific posts with AI-powered generation_
+
+### Personalization & Platform Selection
+
+![Platform selection and personalization panel](./public/input-view.png)
+_Customize your content with brand voice, tone selection, and save your profile for personalized results_
 
 ## ✨ Core Features
 
-- **Unstructured Input:** A single "brain dump" text area for messy notes and ideas.
-- **AI-Powered Generation:** Leverages a powerful LLM to create content.
-- **Tone & Voice Customization:** Users can select a tone and describe their brand voice to guide the AI.
-- **Platform-Specific Output:** Generates optimized content for Instagram, LinkedIn, and Twitter/X.
-- **Human-Like Nuances:** Focuses on natural language flow, varied sentence structure, and appropriate emoji usage.
-- **Personalization Box:** Save your profile information (name, social media handles, interests) for personalized content generation.
-- **Profile Management:** Create, update, and delete your profile with database persistence.
-- **Simple UI:** A clean, intuitive interface for a seamless user experience.
+- **🧠 Unstructured Input:** A single "brain dump" text area for messy notes and ideas - no structure required!
+- **🤖 AI-Powered Generation:** Leverages DeepSeek R1 via OpenRouter API for intelligent content creation.
+- **🎨 Tone & Voice Customization:** Choose from multiple tones (Inspirational, Professional, Witty) and describe your unique brand voice.
+- **📱 Multi-Platform Support:** Generates optimized content for Instagram, LinkedIn, Twitter/X, Facebook, TikTok, and YouTube.
+- **✨ Human-Like Nuances:** AI focuses on natural language flow, varied sentence structure, and appropriate emoji usage.
+- **👤 Personalization Box:** Save your profile information (name, social media handles, interests) for personalized content generation.
+- **💾 Profile Management:** Create, update, and delete your profile with Supabase database persistence.
+- **📊 Human Likeness Score:** Each generated post includes a score indicating how authentic and human-like it sounds.
+- **📋 One-Click Copy:** Easily copy generated posts to clipboard with visual feedback.
+- **🎯 Platform-Specific Formatting:** Content tailored to each platform's best practices and character limits.
+- **🌙 Modern UI:** Clean, dark-themed interface with smooth animations and intuitive user experience.
 
 ## 🛠️ Tech Stack
 
 This project is built with a modern, serverless-first tech stack:
 
-- **Framework:** [Next.js](https://nextjs.org/) 15 (using the App Router)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/) v4
-- **AI Service:** [OpenRouter API](https://openrouter.ai/) with [DeepSeek R1](https://openrouter.ai/models/deepseek/deepseek-r1)
-- **Database:** [Supabase](https://supabase.com/) for user profile storage
-- **State Management:** React Hooks (`useState`, `useEffect`)
-- **Deployment:** [Vercel](https://vercel.com/)
+- **Framework:** [Next.js](https://nextjs.org/) 15 (using the App Router with Server Actions)
+- **Language:** [TypeScript](https://www.typescriptlang.org/) 5.0+
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) v4 (with custom animations and gradients)
+- **AI Service:** [OpenRouter API](https://openrouter.ai/) with [DeepSeek R1](https://openrouter.ai/models/deepseek/deepseek-r1) model
+- **Database:** [Supabase](https://supabase.com/) (PostgreSQL) with Row Level Security policies
+- **State Management:** React Hooks (`useState`, `useEffect`, `useCallback`)
+- **API Routes:** Next.js API Routes for serverless functions
+- **Icons & UI:** Lucide React for icons, custom components
+- **Deployment:** [Vercel](https://vercel.com/) (recommended)
+- **Environment:** Node.js 18+
 
 ## 📂 Project Structure
 
@@ -71,7 +94,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repository:**
     ```sh
-    git clone https://github.com/your-username/vibescribe.git
+    git clone https://github.com/AegisX-dev/VibeScribe.git
     ```
 2.  **Navigate to the project directory:**
     ```sh
@@ -84,20 +107,10 @@ To get a local copy up and running, follow these simple steps.
 4.  **Set up Supabase:**
 
     - Create a new Supabase project
-    - Create a `profiles` table with the following schema:
-      ```sql
-      create table profiles (
-        id text primary key,
-        full_name text,
-        instagram_username text,
-        twitter_username text,
-        linkedin_username text,
-        other_details text,
-        created_at timestamp with time zone default timezone('utc'::text, now()) not null,
-        updated_at timestamp with time zone default timezone('utc'::text, now()) not null
-      );
-      ```
-    - Enable Row Level Security (RLS) policies as needed
+    - Go to the SQL Editor in your Supabase dashboard
+    - Run the SQL script from `supabase-setup.sql` file in this repository
+    - This will create the `profiles` table with proper RLS (Row Level Security) policies
+    - **IMPORTANT:** The RLS policies are required for delete operations to work properly!
 
 5.  **Set up environment variables:**
     Create a `.env.local` file in the root of the project and add your API keys:
@@ -323,10 +336,24 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Dev Sharma**
 
-- GitHub: [@your-username](https://github.com/your-username)
+- GitHub: [@AegisX-Dev](https://github.com/AegisX-Dev)
+- Instagram: [@Ryou.dev\_](https://instagram.com/Ryou.dev_)
+- LinkedIn: [dev-sharma-aegis](https://linkedin.com/in/dev-sharma-aegis)
+
+## 💡 About the Project
+
+VibeScribe was built as part of a hackathon to solve a common problem: the "blank page syndrome" that content creators face. Instead of replacing human creativity, VibeScribe enhances it by transforming rough ideas into polished, platform-ready content that maintains your unique voice.
+
+The project showcases:
+
+- Modern React patterns with Next.js 15
+- Integration with cutting-edge AI models (DeepSeek R1)
+- Full-stack development with serverless architecture
+- Database design with proper security policies
+- Clean, responsive UI/UX design
 
 ---
 
-Made with ❤️ using Next.js and AI
+Made with ❤️ using Next.js, TypeScript, and AI | Built during a Hackathon 🚀

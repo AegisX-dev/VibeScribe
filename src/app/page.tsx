@@ -9,7 +9,9 @@ import PersonalizationBox from './components/PersonalizationBox';
 // Type definition for generated posts
 interface GeneratedPost {
   platform: string;
-  content: string;
+  content?: string;
+  caption?: string;
+  script?: string;
   humanLikenessScore: number;
 }
 
@@ -28,6 +30,7 @@ export default function Home() {
   const [rawText, setRawText] = useState<string>('');
   const [brandVoice, setBrandVoice] = useState<string>('');
   const [selectedTone, setSelectedTone] = useState<string>('');
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['Instagram', 'Twitter', 'LinkedIn']);
   const [generatedContent, setGeneratedContent] = useState<GeneratedPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -107,6 +110,11 @@ export default function Home() {
       return;
     }
 
+    if (selectedPlatforms.length === 0) {
+      setError('Please select at least one platform');
+      return;
+    }
+
     try {
       setIsLoading(true);
       
@@ -120,6 +128,7 @@ export default function Home() {
           rawText,
           brandVoice,
           selectedTone,
+          selectedPlatforms, // Include selected platforms
           userProfile, // Include user profile (will be null for guest users)
         }),
       });
@@ -143,11 +152,36 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-8">
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4 md:p-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
-          VibeScribe
-        </h1>
+        {/* Enhanced Header */}
+        <div className="text-center mb-12 animate-slide-in-up">
+          <div className="inline-block mb-4">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-2">
+              <span className="gradient-text" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                VibeScribe
+              </span>
+            </h1>
+            <div className="h-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 rounded-full"></div>
+          </div>
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-medium">
+            Transform your thoughts into engaging social media content with AI-powered creativity ✨
+          </p>
+          <div className="flex items-center justify-center gap-6 mt-6 text-sm text-gray-400">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🚀</span>
+              <span>Instant Generation</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🎯</span>
+              <span>Multi-Platform</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">✨</span>
+              <span>AI-Powered</span>
+            </div>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left column - Main content */}
@@ -164,6 +198,8 @@ export default function Home() {
             <ConfigSection
               selectedTone={selectedTone}
               setSelectedTone={setSelectedTone}
+              selectedPlatforms={selectedPlatforms}
+              setSelectedPlatforms={setSelectedPlatforms}
               handleSubmit={handleSubmit}
               isLoading={isLoading}
             />
