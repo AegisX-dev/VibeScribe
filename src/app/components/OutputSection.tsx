@@ -33,21 +33,56 @@ export default function OutputSection({
 
       {/* Loading State */}
       {isLoading && (
-        <div className="flex flex-col items-center justify-center py-16 animate-fade-in">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-t-4 border-purple-600 mb-6"></div>
-            <div className="absolute inset-0 animate-ping rounded-full h-20 w-20 border-4 border-purple-300 opacity-20"></div>
+        <div className="space-y-6 animate-fade-in">
+          <div className="flex flex-col items-center justify-center py-8">
+            <div className="relative">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-t-4 border-purple-600 mb-4"></div>
+              <div className="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-purple-300 opacity-20"></div>
+            </div>
+            <p className="text-lg text-gray-200 font-semibold mb-1">
+              ✨ Crafting your content...
+            </p>
+            <p className="text-sm text-gray-400">
+              Our AI is working its magic
+            </p>
+            <div className="mt-4 flex gap-2">
+              <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+              <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            </div>
           </div>
-          <p className="text-xl text-gray-200 font-semibold mb-2">
-            ✨ Crafting your content...
-          </p>
-          <p className="text-sm text-gray-400">
-            Our AI is working its magic
-          </p>
-          <div className="mt-6 flex gap-2">
-            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-            <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+
+          {/* Loading Skeleton Cards */}
+          <div className="space-y-6 mt-6">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 border border-gray-700 rounded-xl p-6 animate-pulse"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                {/* Platform header skeleton */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gray-700 rounded-lg"></div>
+                    <div className="h-6 bg-gray-700 rounded w-24"></div>
+                  </div>
+                  <div className="w-16 h-8 bg-gray-700 rounded-full"></div>
+                </div>
+                
+                {/* Content skeleton */}
+                <div className="space-y-3 mb-4">
+                  <div className="h-4 bg-gray-700 rounded w-full"></div>
+                  <div className="h-4 bg-gray-700 rounded w-5/6"></div>
+                  <div className="h-4 bg-gray-700 rounded w-4/6"></div>
+                  <div className="h-4 bg-gray-700 rounded w-3/6"></div>
+                </div>
+
+                {/* Button skeleton */}
+                <div className="flex justify-end">
+                  <div className="w-24 h-10 bg-gray-700 rounded-lg"></div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -106,7 +141,7 @@ export default function OutputSection({
             Ready to create amazing content?
           </p>
           <p className="text-sm text-gray-400 max-w-md mx-auto">
-            Fill in your brain dump, choose a tone, and click "Generate Content" to get started with AI-powered social media posts
+            Fill in your brain dump, choose a tone, and click &quot;Generate Content&quot; to get started with AI-powered social media posts
           </p>
           <div className="mt-8 flex items-center justify-center gap-4 text-xs text-gray-500">
             <div className="flex items-center gap-1">
@@ -129,3 +164,4 @@ export default function OutputSection({
     </div>
   );
 }
+

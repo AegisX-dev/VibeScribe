@@ -1,15 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Type definition for user profile
-interface UserProfile {
-  id: string;
-  full_name: string | null;
-  instagram_username: string | null;
-  twitter_username: string | null;
-  linkedin_username: string | null;
-  other_details: string | null;
-}
-
 export async function POST(request: NextRequest) {
   try {
     // Check if API key is configured
@@ -143,7 +133,7 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
           }
         ],
         temperature: 0.85, // Increased for more creative diversity and less repetition
-        max_tokens: 4000, // Increased to accommodate 9 posts (3 per platform)
+        max_tokens: 8000, // Increased significantly to accommodate multiple platforms with Instagram caption+script
       }),
     });
 
@@ -155,6 +145,13 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
 
     const data = await response.json();
     const text = data.choices[0]?.message?.content || '';
+    
+    // Check if the response was truncated
+    const finishReason = data.choices[0]?.finish_reason;
+    if (finishReason === 'length') {
+      console.warn('Warning: AI response was truncated due to max_tokens limit');
+      throw new Error('Response was truncated. Try selecting fewer platforms or simplifying your input.');
+    }
 
     // Parse the JSON response
     // Clean up any markdown formatting that might be present
@@ -165,7 +162,55 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
       cleanedText = cleanedText.replace(/```\n?/, '').replace(/\n?```$/, '');
     }
 
-    const parsedContent = JSON.parse(cleanedText);
+    // Only remove control characters that are definitely problematic
+    // Keep actual newlines in the JSON structure - JSON.parse can handle them
+    cleanedText = cleanedText
+      .replace(/[\u0000-\u0008\u000B-\u000C\u000E-\u001F\u007F]/g, ''); // Remove control chars except \n and \r
+
+    let parsedContent;
+    try {
+      parsedContent = JSON.parse(cleanedText);
+    } catch (parseError) {
+      // If parsing still fails, try to fix common issues
+      console.error('Initial JSON parse failed, attempting fixes...');
+      console.error('Problematic text (first 2000 chars):', cleanedText.substring(0, 2000));
+      console.error('Problematic text (last 500 chars):', cleanedText.substring(cleanedText.length - 500));
+      console.error('Parse error:', parseError);
+      
+      // Check if the JSON appears to be truncated
+      const hasPosts = cleanedText.includes('"posts"');
+      const hasClosingArray = cleanedText.includes('}]');
+      const endsWithBrace = cleanedText.trim().endsWith('}');
+      
+      if (!hasPosts) {
+        throw new Error('Invalid response format - missing posts data.');
+      }
+      
+      if (!hasClosingArray || !endsWithBrace) {
+        console.error('JSON appears truncated - missing closing brackets');
+        throw new Error('AI response appears to be incomplete. Try selecting fewer platforms or reducing input length.');
+      }
+      
+      // Try to fix unescaped newlines within string values
+      // This regex-based approach is risky but may help with edge cases
+      try {
+        // Escape unescaped newlines within strings
+        let fixedText = cleanedText;
+        
+        // Replace literal newlines within string values (between quotes) with \n
+        fixedText = fixedText.replace(/"((?:[^"\\]|\\.)*)"/g, (match: string) => {
+          return match
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '')
+            .replace(/\t/g, '\\t');
+        });
+        
+        parsedContent = JSON.parse(fixedText);
+      } catch (secondError) {
+        console.error('Second parse attempt failed:', secondError);
+        throw new Error('Unable to parse AI response. The response format may be invalid.');
+      }
+    }
 
     // Return the parsed content
     return NextResponse.json(parsedContent, { status: 200 });

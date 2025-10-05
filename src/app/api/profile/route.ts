@@ -153,7 +153,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Delete the profile from the database
-    const { data, error: deleteError, count } = await supabase
+    const { data, error: deleteError } = await supabase
       .from('profiles')
       .delete()
       .eq('id', userId)
