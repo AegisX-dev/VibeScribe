@@ -9,14 +9,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           error: 'API key not configured',
-          details: 'OPENROUTER_API_KEY environment variable is missing'
+          details: 'OPENROUTER_API_KEY environment variable is missing. Please add it to your Vercel environment variables.'
         },
         { status: 500 }
       );
     }
 
     // Read the request body - now includes optional userProfile and selectedPlatforms
-    const { rawText, brandVoice, selectedTone, selectedPlatforms, userProfile } = await request.json();
+    let rawText, brandVoice, selectedTone, selectedPlatforms, userProfile;
+    
+    try {
+      const body = await request.json();
+      ({ rawText, brandVoice, selectedTone, selectedPlatforms, userProfile } = body);
+    } catch (parseError) {
+      console.error('Failed to parse request body:', parseError);
+      return NextResponse.json(
+        { 
+          error: 'Invalid request body',
+          details: 'The request body must be valid JSON'
+        },
+        { status: 400 }
+      );
+    }
 
     // Validate required fields
     if (!rawText) {
@@ -138,13 +152,44 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenRouter API error:', errorData);
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { error: 'Failed to parse error response' };
+      }
+      console.error('OpenRouter API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorData
+      });
+      
+      // Provide more specific error messages
+      if (response.status === 401) {
+        throw new Error('Authentication failed. Please check your OPENROUTER_API_KEY.');
+      } else if (response.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.');
+      } else if (response.status === 402) {
+        throw new Error('Insufficient credits in OpenRouter account.');
+      }
+      
       throw new Error(`OpenRouter API error: ${response.status} - ${JSON.stringify(errorData)}`);
     }
 
     const data = await response.json();
+    
+    // Validate the response structure
+    if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+      console.error('Invalid API response structure:', data);
+      throw new Error('Invalid response from AI service - no choices returned');
+    }
+    
     const text = data.choices[0]?.message?.content || '';
+    
+    if (!text) {
+      console.error('Empty content from AI response:', data);
+      throw new Error('AI service returned empty content');
+    }
     
     // Check if the response was truncated
     const finishReason = data.choices[0]?.finish_reason;
@@ -225,12 +270,35 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
       console.error('Error stack:', error.stack);
     }
     
+    // Determine appropriate status code
+    let statusCode = 500;
+    let errorMessage = 'Failed to generate content';
+    let errorDetails = error instanceof Error ? error.message : 'Unknown error';
+    
+    // Check for specific error types
+    if (error instanceof Error) {
+      if (error.message.includes('Authentication failed') || error.message.includes('API key')) {
+        statusCode = 500;
+        errorMessage = 'Configuration Error';
+      } else if (error.message.includes('Rate limit')) {
+        statusCode = 429;
+        errorMessage = 'Rate Limit Exceeded';
+      } else if (error.message.includes('Insufficient credits')) {
+        statusCode = 402;
+        errorMessage = 'Payment Required';
+      } else if (error.message.includes('truncated')) {
+        statusCode = 413;
+        errorMessage = 'Content Too Large';
+      }
+    }
+    
     return NextResponse.json(
       { 
-        error: 'Failed to generate content',
-        details: error instanceof Error ? error.message : 'Unknown error'
+        error: errorMessage,
+        details: errorDetails,
+        timestamp: new Date().toISOString()
       },
-      { status: 500 }
+      { status: statusCode }
     );
   }
 }
