@@ -155,7 +155,7 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
       let errorData;
       try {
         errorData = await response.json();
-      } catch (e) {
+      } catch {
         errorData = { error: 'Failed to parse error response' };
       }
       console.error('OpenRouter API error:', {
@@ -273,7 +273,7 @@ Remember: Each of the 3 versions per platform should feel like it came from diff
     // Determine appropriate status code
     let statusCode = 500;
     let errorMessage = 'Failed to generate content';
-    let errorDetails = error instanceof Error ? error.message : 'Unknown error';
+    const errorDetails = error instanceof Error ? error.message : 'Unknown error';
     
     // Check for specific error types
     if (error instanceof Error) {
