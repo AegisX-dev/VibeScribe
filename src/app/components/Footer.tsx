@@ -30,7 +30,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-[var(--accent)] rounded-full"></span>
-                DeepSeek R1 via OpenRouter
+                Gemini 2.5 Flash
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-[var(--accent)] rounded-full"></span>
