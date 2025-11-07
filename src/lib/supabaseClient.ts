@@ -9,26 +9,44 @@ export type Database = {
         Row: {
           id: string;
           full_name: string | null;
+          role: string | null;
+          project_name: string | null;
+          project_description: string | null;
+          target_audience: string | null;
+          style_keywords: string | null;
+          source_url: string | null;
           instagram_username: string | null;
           twitter_username: string | null;
           linkedin_username: string | null;
-          other_details: string | null;
+          legacy_other_details: string | null;
         };
         Insert: {
           id: string;
           full_name?: string | null;
+          role?: string | null;
+          project_name?: string | null;
+          project_description?: string | null;
+          target_audience?: string | null;
+          style_keywords?: string | null;
+          source_url?: string | null;
           instagram_username?: string | null;
           twitter_username?: string | null;
           linkedin_username?: string | null;
-          other_details?: string | null;
+          legacy_other_details?: string | null;
         };
         Update: {
           id?: string;
           full_name?: string | null;
+          role?: string | null;
+          project_name?: string | null;
+          project_description?: string | null;
+          target_audience?: string | null;
+          style_keywords?: string | null;
+          source_url?: string | null;
           instagram_username?: string | null;
           twitter_username?: string | null;
           linkedin_username?: string | null;
-          other_details?: string | null;
+          legacy_other_details?: string | null;
         };
       };
     };

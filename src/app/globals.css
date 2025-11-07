@@ -1,24 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap');
-
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --gradient-start: #8b5cf6;
-  --gradient-end: #3b82f6;
-  --accent: #ec4899;
+@font-face {
+  font-family: 'Momo Trust Display';
+  src: url('/fonts/MomoTrustDisplay-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+:root {
+  --background: #0A0A0A;
+  --content: #111111;
+  --border: rgba(255, 255, 255, 0.1);
+  --text-primary: #F0F0F0;
+  --text-secondary: #A0A0A0;
+  --accent: #38bdf8;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Momo Trust Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -79,15 +81,10 @@ body {
 }
 
 .glass-effect {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--content);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.dark .glass-effect {
-  background: rgba(31, 41, 55, 0.9);
-  border: 1px solid rgba(75, 85, 99, 0.3);
+  border: 1px solid var(--border);
 }
 
 /* Scrollbar Styling */
@@ -97,26 +94,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--background);
   border-radius: 10px;
 }
 
-.dark ::-webkit-scrollbar-track {
-  background: #1f2937;
-}
-
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  background: var(--accent);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  background: #0ea5e9;
 }
 
 /* Focus Visible Improvements */
 *:focus-visible {
-  outline: 2px solid var(--gradient-start);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
 }

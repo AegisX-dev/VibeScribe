@@ -39,7 +39,7 @@ export default function AuthButton() {
     <div className="flex items-center gap-4">
       {user ? (
         <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-[var(--text-secondary)]">
             {user.email}
           </span>
           <button
@@ -52,7 +52,7 @@ export default function AuthButton() {
       ) : (
         <button
           onClick={() => setShowAuthModal(true)}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 text-sm font-medium text-white bg-[var(--accent)] rounded-lg hover:opacity-90 transition-opacity"
         >
           Login
         </button>
@@ -61,10 +61,10 @@ export default function AuthButton() {
       {/* Auth Modal */}
       {showAuthModal && !user && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+          <div className="bg-[var(--content)] rounded-lg shadow-xl max-w-md w-full p-6 relative border border-[var(--border)]">
             <button
               onClick={() => setShowAuthModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               aria-label="Close"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +72,7 @@ export default function AuthButton() {
               </svg>
             </button>
             
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Welcome to VibeScribe</h2>
+            <h2 className="text-2xl font-bold mb-6 text-[var(--text-primary)]">Welcome to VibeScribe</h2>
             
             <Auth
               supabaseClient={supabase}
@@ -81,8 +81,8 @@ export default function AuthButton() {
                 variables: {
                   default: {
                     colors: {
-                      brand: '#2563eb',
-                      brandAccent: '#1d4ed8',
+                      brand: '#38bdf8',
+                      brandAccent: '#0ea5e9',
                     },
                   },
                 },

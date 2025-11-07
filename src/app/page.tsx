@@ -5,6 +5,7 @@ import InputSection from './components/InputSection';
 import ConfigSection from './components/ConfigSection';
 import OutputSection from './components/OutputSection';
 import PersonalizationBox from './components/PersonalizationBox';
+import { UserProfile } from '@/lib/types';
 
 // Type definition for generated posts
 interface GeneratedPost {
@@ -13,16 +14,6 @@ interface GeneratedPost {
   caption?: string;
   script?: string;
   humanLikenessScore: number;
-}
-
-// Type definition for user profile
-interface UserProfile {
-  id: string;
-  full_name: string | null;
-  instagram_username: string | null;
-  twitter_username: string | null;
-  linkedin_username: string | null;
-  other_details: string | null;
 }
 
 export default function Home() {
@@ -48,14 +39,7 @@ export default function Home() {
           const storedProfile = localStorage.getItem('vibescribe_user_profile');
           if (storedProfile) {
             const profileData = JSON.parse(storedProfile);
-            setUserProfile({
-              id: 'local-user',
-              full_name: profileData.full_name || null,
-              instagram_username: profileData.instagram_username || null,
-              twitter_username: profileData.twitter_username || null,
-              linkedin_username: profileData.linkedin_username || null,
-              other_details: profileData.other_details || null,
-            });
+            setUserProfile(profileData);
           }
           return;
         }
@@ -76,14 +60,7 @@ export default function Home() {
           const storedProfile = localStorage.getItem('vibescribe_user_profile');
           if (storedProfile) {
             const profileData = JSON.parse(storedProfile);
-            setUserProfile({
-              id: 'local-user',
-              full_name: profileData.full_name || null,
-              instagram_username: profileData.instagram_username || null,
-              twitter_username: profileData.twitter_username || null,
-              linkedin_username: profileData.linkedin_username || null,
-              other_details: profileData.other_details || null,
-            });
+            setUserProfile(profileData);
           }
         } catch (err) {
           console.error('Error loading from localStorage:', err);
@@ -94,7 +71,50 @@ export default function Home() {
     fetchUserProfile();
   }, []);
 
-  // Handler function to be filled in later
+  // Handler for saving profile
+  const handleSaveProfile = async (profile: UserProfile) => {
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserProfile(data.profile);
+        // Also update localStorage
+        localStorage.setItem('vibescribe_user_profile', JSON.stringify(data.profile));
+      } else {
+        console.error('Failed to save profile');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+    }
+  };
+
+  // Handler for loading profile
+  const handleLoadProfile = async () => {
+    try {
+      const userId = localStorage.getItem('vibescribe_user_id');
+      if (!userId) return;
+
+      const response = await fetch(`/api/profile?id=${userId}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.profile) {
+          setUserProfile(data.profile);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error);
+    }
+  };
+
+  // Handler to submit for content generation
   const handleSubmit = async () => {
     // Reset error state
     setError('');
@@ -152,22 +172,22 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4 md:p-8 transition-colors duration-300">
+    <main className="min-h-screen p-4 md:p-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         {/* Enhanced Header */}
         <div className="text-center mb-12 animate-slide-in-up">
           <div className="inline-block mb-4">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-2">
-              <span className="gradient-text" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              <span className="text-[var(--accent)]" style={{ fontFamily: "'Poppins', sans-serif" }}>
                 VibeScribe
               </span>
             </h1>
-            <div className="h-1.5 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 rounded-full"></div>
+            <div className="h-1.5 bg-[var(--accent)] rounded-full"></div>
           </div>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto font-medium">
             Transform your thoughts into engaging social media content with AI-powered creativity ✨
           </p>
-          <div className="flex items-center justify-center gap-6 mt-6 text-sm text-gray-400">
+          <div className="flex items-center justify-center gap-6 mt-6 text-sm text-[var(--text-secondary)]">
             <div className="flex items-center gap-2">
               <span className="text-2xl">🚀</span>
               <span>Instant Generation</span>
@@ -215,7 +235,10 @@ export default function Home() {
           {/* Right column - Personalization Box */}
           <div className="lg:col-span-1">
             <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
-              <PersonalizationBox />
+              <PersonalizationBox 
+                profile={userProfile}
+                onSave={handleSaveProfile}
+              />
             </div>
           </div>
         </div>

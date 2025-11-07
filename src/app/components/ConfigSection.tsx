@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Drama, Rocket, Lightbulb, Laugh, Smile, BookOpen, BookText, Instagram, Twitter, Linkedin, Facebook, Music, Video, Sparkles } from 'lucide-react';
+import { FaMobileAlt, FaTheaterMasks, FaRocket, FaLightbulb, FaLaughSquint, FaSmile, FaBookOpen, FaBook, FaInstagram, FaTwitter, FaLinkedin, FaFacebook, FaMusic, FaYoutube, FaStar } from 'react-icons/fa';
 
 // Props interface
 interface ConfigSectionProps {
@@ -13,22 +13,22 @@ interface ConfigSectionProps {
 
 // Define available tones with descriptions
 const tones = [
-  { value: 'inspirational', label: 'Inspirational', icon: Rocket, description: 'Motivate and uplift' },
-  { value: 'professional', label: 'Professional', icon: Lightbulb, description: 'Polished and business-ready' },
-  { value: 'witty', label: 'Witty', icon: Laugh, description: 'Clever and humorous' },
-  { value: 'casual', label: 'Casual', icon: Smile, description: 'Friendly and approachable' },
-  { value: 'educational', label: 'Educational', icon: BookOpen, description: 'Informative and insightful' },
-  { value: 'storytelling', label: 'Storytelling', icon: BookText, description: 'Narrative and engaging' },
+  { value: 'inspirational', label: 'Inspirational', icon: FaRocket, description: 'Motivate and uplift' },
+  { value: 'professional', label: 'Professional', icon: FaLightbulb, description: 'Polished and business-ready' },
+  { value: 'witty', label: 'Witty', icon: FaLaughSquint, description: 'Clever and humorous' },
+  { value: 'casual', label: 'Casual', icon: FaSmile, description: 'Friendly and approachable' },
+  { value: 'educational', label: 'Educational', icon: FaBookOpen, description: 'Informative and insightful' },
+  { value: 'storytelling', label: 'Storytelling', icon: FaBook, description: 'Narrative and engaging' },
 ];
 
 // Define available platforms
 const platforms = [
-  { value: 'Instagram', label: 'Instagram', icon: Instagram, description: 'Visual storytelling' },
-  { value: 'Twitter', label: 'Twitter/X', icon: Twitter, description: 'Short and punchy' },
-  { value: 'LinkedIn', label: 'LinkedIn', icon: Linkedin, description: 'Professional networking' },
-  { value: 'Facebook', label: 'Facebook', icon: Facebook, description: 'Community engagement' },
-  { value: 'TikTok', label: 'TikTok', icon: Music, description: 'Short video scripts' },
-  { value: 'YouTube', label: 'YouTube', icon: Video, description: 'Video descriptions' },
+  { value: 'Instagram', label: 'Instagram', icon: FaInstagram, description: 'Visual storytelling' },
+  { value: 'Twitter', label: 'Twitter/X', icon: FaTwitter, description: 'Short and punchy' },
+  { value: 'LinkedIn', label: 'LinkedIn', icon: FaLinkedin, description: 'Professional networking' },
+  { value: 'Facebook', label: 'Facebook', icon: FaFacebook, description: 'Community engagement' },
+  { value: 'TikTok', label: 'TikTok', icon: FaMusic, description: 'Short video scripts' },
+  { value: 'YouTube', label: 'YouTube', icon: FaYoutube, description: 'Video descriptions' },
 ];
 
 export default function ConfigSection({
@@ -50,11 +50,11 @@ export default function ConfigSection({
   };
 
   return (
-    <div className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 space-y-6 border-2 border-gray-700 hover:shadow-2xl transition-all duration-300">
+    <div className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 space-y-6 transition-all duration-300">
       {/* Platform Selection */}
       <div>
-        <label className="flex items-center gap-2 text-lg md:text-xl font-bold text-gray-100 mb-5">
-          <Smartphone className="w-6 h-6 text-blue-400" />
+        <label className="flex items-center gap-2 text-lg md:text-xl font-bold text-[var(--text-primary)] mb-5">
+          <FaMobileAlt className="w-6 h-6 text-[var(--accent)]" />
           <span>Select Platforms</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -64,17 +64,17 @@ export default function ConfigSection({
               <div key={platform.value} className="relative group">
                 <button
                   onClick={() => togglePlatform(platform.value)}
-                  className="relative w-full inline-block p-px font-semibold leading-6 text-white bg-gray-800 shadow-2xl cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95"
+                  className="relative w-full inline-block p-px font-semibold leading-6 text-[var(--text-primary)] bg-[var(--content)] shadow-2xl cursor-pointer rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95"
                   title={platform.description}
                 >
                   <span
-                    className={`absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 p-[2px] transition-opacity duration-500 ${
+                    className={`absolute inset-0 rounded-xl bg-[var(--accent)] p-[2px] transition-opacity duration-500 ${
                       selectedPlatforms.includes(platform.value) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                     }`}
                   ></span>
 
                   <span className={`relative z-10 block px-4 py-3 rounded-xl ${
-                    selectedPlatforms.includes(platform.value) ? 'bg-gradient-to-br from-purple-600 to-blue-600' : 'bg-gray-950'
+                    selectedPlatforms.includes(platform.value) ? 'bg-[var(--accent)]' : 'bg-[var(--background)]'
                   }`}>
                     <div className="relative z-10 flex flex-col items-center gap-1">
                       <div className="flex items-center gap-2">
@@ -101,15 +101,15 @@ export default function ConfigSection({
             );
           })}
         </div>
-        <p className="text-sm text-gray-400 mt-3">
+        <p className="text-sm text-[var(--text-secondary)] mt-3">
           Selected: {selectedPlatforms.length} platform{selectedPlatforms.length !== 1 ? 's' : ''}
         </p>
       </div>
 
       {/* Tone Selection */}
       <div>
-        <label className="flex items-center gap-2 text-lg md:text-xl font-bold text-gray-100 mb-5">
-          <Drama className="w-6 h-6 text-pink-400" />
+        <label className="flex items-center gap-2 text-lg md:text-xl font-bold text-[var(--text-primary)] mb-5">
+          <FaTheaterMasks className="w-6 h-6 text-[var(--accent)]" />
           <span>Select Your Tone</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -119,17 +119,17 @@ export default function ConfigSection({
               <div key={tone.value} className="relative group">
                 <button
                   onClick={() => setSelectedTone(tone.value)}
-                  className="relative w-full inline-block p-px font-semibold leading-6 text-white bg-gray-800 shadow-2xl cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95"
+                  className="relative w-full inline-block p-px font-semibold leading-6 text-[var(--text-primary)] bg-[var(--content)] shadow-2xl cursor-pointer rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95"
                   title={tone.description}
                 >
                   <span
-                    className={`absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 p-[2px] transition-opacity duration-500 ${
+                    className={`absolute inset-0 rounded-xl bg-[var(--accent)] p-[2px] transition-opacity duration-500 ${
                       selectedTone === tone.value ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                     }`}
                   ></span>
 
                   <span className={`relative z-10 block px-4 py-4 rounded-xl ${
-                    selectedTone === tone.value ? 'bg-gradient-to-br from-purple-600 to-blue-600' : 'bg-gray-950'
+                    selectedTone === tone.value ? 'bg-[var(--accent)]' : 'bg-[var(--background)]'
                   }`}>
                     <div className="relative z-10 flex flex-col items-center gap-1">
                       <div className="flex items-center gap-2">
@@ -158,18 +158,18 @@ export default function ConfigSection({
         </div>
       </div>
 
-      <div className="pt-4">
+      <div className="pt-6">
         <div className="relative group">
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="relative w-full inline-block p-px font-semibold leading-6 text-white bg-gray-800 shadow-2xl cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="relative w-full inline-block p-px font-semibold leading-6 text-[var(--text-primary)] bg-[var(--content)] shadow-2xl cursor-pointer rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             <span
-              className="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              className="absolute inset-0 rounded-xl bg-[var(--accent)] p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             ></span>
 
-            <span className="relative z-10 block px-6 py-5 rounded-xl bg-gray-950">
+            <span className="relative z-10 block px-6 py-5 rounded-xl bg-[var(--background)]">
               <div className="relative z-10 flex items-center justify-center space-x-2">
                 {isLoading ? (
                   <>
@@ -198,7 +198,7 @@ export default function ConfigSection({
                 ) : (
                   <>
                     <span className="transition-all duration-500 group-hover:translate-x-1 text-lg font-bold">
-                      <Sparkles className="w-5 h-5 inline-block mr-2" />
+                      <FaStar className="w-5 h-5 inline-block mr-2" />
                       Generate Content
                     </span>
                     <svg

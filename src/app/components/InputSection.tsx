@@ -1,5 +1,5 @@
 import React from 'react';
-import { Brain, Palette } from 'lucide-react';
+import { FaBrain, FaPalette } from 'react-icons/fa';
 
 // Props interface
 interface InputSectionProps {
@@ -20,19 +20,19 @@ export default function InputSection({
   const percentage = (charCount / maxChars) * 100;
 
   return (
-    <div className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 space-y-6 border-2 border-gray-700 hover:shadow-2xl transition-all duration-300">
+    <div className="glass-effect rounded-2xl shadow-xl p-6 md:p-8 space-y-6 transition-all duration-300">
       <div>
         <div className="flex items-center justify-between mb-3">
           <label
             htmlFor="brain-dump"
-            className="flex items-center gap-2 text-lg md:text-xl font-bold text-gray-100"
+            className="flex items-center gap-2 text-lg md:text-xl font-bold text-[var(--text-primary)]"
           >
-            <Brain className="w-6 h-6 text-purple-400" />
+            <FaBrain className="w-6 h-6 text-[var(--accent)]" />
             <span>Brain Dump</span>
           </label>
           <div className="flex items-center gap-2">
             <span className={`text-sm font-medium ${
-              percentage > 90 ? 'text-red-500' : percentage > 70 ? 'text-yellow-600' : 'text-gray-400'
+              percentage > 90 ? 'text-red-500' : percentage > 70 ? 'text-yellow-600' : 'text-[var(--text-secondary)]'
             }`}>
               {charCount} / {maxChars}
             </span>
@@ -48,15 +48,15 @@ export default function InputSection({
               }
             }}
             placeholder="✍️ Dump all your thoughts, ideas, or content here... Let your creativity flow!"
-            className="bg-[#222630] w-full h-48 px-4 py-3 outline-none text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] resize-none placeholder-gray-500"
+            className="bg-[var(--content)] w-full h-48 px-4 py-3 outline-none text-[var(--text-primary)] rounded-lg border border-[var(--border)] transition-colors duration-100 resize-none placeholder-[var(--text-secondary)]"
             rows={8}
             maxLength={maxChars}
           />
           {/* Progress bar */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-700 rounded-b-lg overflow-hidden">
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-[var(--background)] rounded-b-lg overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
-                percentage > 90 ? 'bg-red-500' : percentage > 70 ? 'bg-yellow-500' : 'bg-gradient-to-r from-purple-500 to-blue-500'
+                percentage > 90 ? 'bg-red-500' : percentage > 70 ? 'bg-yellow-500' : 'bg-[var(--accent)]'
               }`}
               style={{ width: `${percentage}%` }}
             />
@@ -67,11 +67,11 @@ export default function InputSection({
       <div>
         <label
           htmlFor="brand-voice"
-          className="flex items-center gap-2 text-lg md:text-xl font-bold text-gray-100 mb-3"
+          className="flex items-center gap-2 text-lg md:text-xl font-bold text-[var(--text-primary)] mb-3"
         >
-          <Palette className="w-6 h-6 text-pink-400" />
+          <FaPalette className="w-6 h-6 text-[var(--accent)]" />
           <span>Brand Voice</span>
-          <span className="text-sm font-normal text-gray-400">(Optional)</span>
+          <span className="text-sm font-normal text-[var(--text-secondary)]">(Optional)</span>
         </label>
         <div className="relative">
           <input
@@ -80,12 +80,12 @@ export default function InputSection({
             value={brandVoice}
             onChange={(e) => setBrandVoice(e.target.value)}
             placeholder="e.g., professional yet friendly, witty and engaging, inspirational"
-            className="bg-[#222630] px-4 py-3 outline-none w-full text-white rounded-lg border-2 transition-colors duration-100 border-solid focus:border-[#596A95] border-[#2B3040] placeholder-gray-500"
+            className="bg-[var(--content)] px-4 py-3 outline-none w-full text-[var(--text-primary)] rounded-lg border border-[var(--border)] transition-colors duration-100 placeholder-[var(--text-secondary)]"
           />
           {brandVoice && (
             <button
               onClick={() => setBrandVoice('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Clear brand voice"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

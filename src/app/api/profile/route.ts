@@ -14,11 +14,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { 
       id,
-      full_name, 
+      full_name,
+      role,
+      project_name,
+      project_description,
+      target_audience,
+      style_keywords,
+      source_url,
       instagram_username, 
       twitter_username, 
-      linkedin_username, 
-      other_details 
+      linkedin_username
     } = body;
 
     // Validate that an ID is provided
@@ -30,7 +35,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate that at least some data is provided
-    if (!full_name && !instagram_username && !twitter_username && !linkedin_username && !other_details) {
+    if (!full_name && !role && !project_name && !project_description && 
+        !target_audience && !style_keywords && !source_url &&
+        !instagram_username && !twitter_username && !linkedin_username) {
       return NextResponse.json(
         { error: 'At least one field must be provided.' },
         { status: 400 }
@@ -41,10 +48,15 @@ export async function POST(request: NextRequest) {
     const profileData = {
       id: id,
       full_name: full_name || null,
+      role: role || null,
+      project_name: project_name || null,
+      project_description: project_description || null,
+      target_audience: target_audience || null,
+      style_keywords: style_keywords || null,
+      source_url: source_url || null,
       instagram_username: instagram_username || null,
       twitter_username: twitter_username || null,
-      linkedin_username: linkedin_username || null,
-      other_details: other_details || null,
+      linkedin_username: linkedin_username || null
     };
 
     const { data, error: upsertError } = await supabase
