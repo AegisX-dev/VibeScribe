@@ -21,7 +21,7 @@ export default function Home() {
   const [rawText, setRawText] = useState<string>('');
   const [brandVoice, setBrandVoice] = useState<string>('');
   const [selectedTone, setSelectedTone] = useState<string>('');
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['Instagram', 'Twitter', 'LinkedIn']);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [generatedContent, setGeneratedContent] = useState<GeneratedPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
