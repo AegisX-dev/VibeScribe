@@ -18,9 +18,10 @@ const jsonOutputSchema = `{
 
 // Helper function to build system prompt
 function buildSystemPrompt(
-  profile: UserProfile | null, 
-  tone: string, 
-  styleExample: string | null
+  profile: UserProfile | null,
+  tone: string,
+  styleExample: string | null,
+  platforms: string[]
 ): string {
   let prompt = `You are VibeScribe, an expert AI content partner specializing in generating authentic, human-like social media posts. Your mission is to transform user input into engaging, platform-specific content that feels natural and genuine.
 
@@ -65,7 +66,7 @@ Match the cadence, word choice, formatting preferences, and overall vibe of this
   prompt += `📝 TONE: ${tone}\n\n`;
 
   // Final instructions
-  prompt += `Now, analyze the user's "brain dump" below and generate 6 platform-specific posts (one for each of: Instagram, Twitter/X, LinkedIn, Facebook, TikTok, YouTube). Each post should:
+  prompt += `Now, analyze the user's "brain dump" below and generate 3 distinct posts for each of the following platforms: ${platforms.join(', ')}. Each post should:
 - Be tailored to the platform's format and audience
 - Feel authentic and human-written
 - Include a humanLikenessScore (1-100) indicating how natural it sounds
@@ -92,12 +93,18 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { rawText, selectedTone, userProfile } = body;
+    const { rawText, selectedTone, userProfile, selectedPlatforms } = body;
 
     // Validate required fields
     if (!rawText) {
       return NextResponse.json(
         { error: 'Raw text is required' },
+        { status: 400 }
+      );
+    }
+    if (!selectedPlatforms || selectedPlatforms.length === 0) {
+      return NextResponse.json(
+        { error: 'At least one platform must be selected' },
         { status: 400 }
       );
     }
@@ -124,9 +131,10 @@ export async function POST(request: NextRequest) {
 
     // Build the system prompt
     const systemPrompt = buildSystemPrompt(
-      userProfile || null, 
-      selectedTone || 'professional', 
-      styleExample
+      userProfile || null,
+      selectedTone || 'professional',
+      styleExample,
+      selectedPlatforms
     );
 
     // Get the generative model
