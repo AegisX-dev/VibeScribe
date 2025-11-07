@@ -9,7 +9,7 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/AegisX-Dev/VibeScribe)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-🌐 **[Live Demo](https://vibe-scribe.vercel.app)** | 🚀 **Deployed on Vercel** | ⭐ **Star us on GitHub!**
+🌐 **[Live Demo](https://vibe-scribe.vercel.app)** | � **[Read the Case Study](https://ai-orchestrator.hashnode.dev/from-ai-tool-to-ai-partner-re-architecting-vibescribe-for-deep-personalization)** | ⭐ **Star us on GitHub!**
 
 **VibeScribe** is an AI-powered content partner that transforms raw, unstructured thoughts into authentic, platform-specific social media posts. The goal is to generate content that feels genuinely human, maintains _your_ unique brand voice, and saves creators hours of time.
 
@@ -26,17 +26,9 @@ Want to try it out right now? Visit **[vibe-scribe.vercel.app](https://vibe-scri
 
 **Pro Tip:** Go to the Personalization Box and save your profile. The AI will use this data to generate deeply personalized content that matches your role, audience, and unique writing style!
 
-## 📸 Screenshots
+## � Hero Demo
 
-### Main Interface - Input & Output
-
-![VibeScribe Interface showing generated posts](./public/output-view.png)
-_Transform messy brain dumps into polished, platform-specific posts with AI-powered generation_
-
-### Personalization & Platform Selection
-
-![Platform selection and personalization panel](./public/input-view.png)
-_Customize your content with brand voice, tone selection, and save your profile for personalized results_
+![VibeScribe Hero Demo](./assets/hero-demo.gif)
 
 ## ✨ Core Features
 
